@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Wallet as WalletIcon, Radio, ArrowRight, Trophy } from "lucide-react";
+import { useAuth } from "@/lib/AuthContext";
+import { Wallet as WalletIcon, Radio, ArrowRight, Trophy, LogIn, LogOut } from "lucide-react";
 
 const NEON = "#ff00ff";
 const CYAN = "#00ffff";
@@ -10,6 +11,7 @@ export default function PulpLayout() {
   const [balance, setBalance] = useState(null);
   const [mode, setMode] = useState("free");
   const location = useLocation();
+  const { isAuthenticated, isLoadingAuth, user, logout, navigateToLogin } = useAuth();
 
   async function loadWallet() {
     try {
@@ -159,6 +161,26 @@ export default function PulpLayout() {
           >
             Operator Portal <ArrowRight className="inline w-3 h-3" />
           </Link>
+          {!isLoadingAuth && (isAuthenticated ? (
+            <button
+              type="button"
+              onClick={() => { logout(false); window.location.reload(); }}
+              title={user?.email}
+              className="font-extrabold text-xs uppercase tracking-widest bg-transparent"
+              style={{ color: CYAN, borderBottom: "2px solid " + CYAN }}
+            >
+              <LogOut className="inline w-3 h-3 mr-0.5" /> Log out
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={navigateToLogin}
+              className="font-extrabold text-xs uppercase tracking-widest bg-transparent"
+              style={{ color: CYAN, textShadow: "0 0 8px rgba(0,255,255,0.7)", borderBottom: "2px solid " + CYAN }}
+            >
+              <LogIn className="inline w-3 h-3 mr-0.5" /> Log in
+            </button>
+          ))}
         </div>
       </header>
 
