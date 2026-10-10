@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import DepositPanel from "@/components/DepositPanel";
 import ManualDepositForm from "@/components/ManualDepositForm";
 import { base44 } from "@/api/base44Client";
+import { useAuth } from "@/lib/AuthContext";
 
 const NEON = "#ff00ff";
 const CYAN = "#00ffff";
@@ -10,6 +11,7 @@ const INK = "#0c061a";
 
 export default function Wallet() {
   const { wallet } = useOutletContext();
+  const { isAuthenticated, navigateToLogin } = useAuth();
   const [balance, setBalance] = useState(wallet?.balance ?? null);
   const [mode, setMode] = useState(wallet?.mode ?? "free");
   const [stats, setStats] = useState(null);
@@ -137,12 +139,32 @@ export default function Wallet() {
             <MethodBtn active={depositMethod === "manual"} onClick={() => setDepositMethod("manual")} label="Manual (Default)" tone="cyan" />
             <MethodBtn active={depositMethod === "onchain"} onClick={() => setDepositMethod("onchain")} label="On-Chain (MetaMask)" tone="neon" />
           </div>
-          {depositMethod === "manual"
-            ? <ManualDepositForm onSubmitted={load} walletCtx={wallet} />
-            : <DepositPanel onCredited={load} walletCtx={wallet} />}
+          {!isAuthenticated
+            ? <LoginToDeposit onLogin={navigateToLogin} />
+            : depositMethod === "manual"
+              ? <ManualDepositForm onSubmitted={load} walletCtx={wallet} />
+              : <DepositPanel onCredited={load} walletCtx={wallet} />}
         </div>
       </div>
     </div>
+  );
+}
+
+function LoginToDeposit({ onLogin }) {
+  return (
+    <section className="p-6 flex flex-col gap-4" style={{ background: "linear-gradient(180deg,#160a2b,#0c061a)", border: "1px solid " + NEON, boxShadow: "0 0 14px rgba(255,0,255,0.25)" }}>
+      <div className="text-[11px] uppercase tracking-widest font-black" style={{ color: NEON }}>Deposit</div>
+      <p className="text-sm leading-snug" style={{ color: "rgba(255,255,255,0.7)" }}>
+        Log in or create an account to deposit DCDN into your vault. Deposits are credited to your account, so we need to know who you are first.
+      </p>
+      <button
+        onClick={onLogin}
+        className="uppercase tracking-widest py-3 px-4 text-lg font-black"
+        style={{ fontFamily: "Impact, sans-serif", background: CYAN, color: INK, boxShadow: "0 0 14px rgba(0,255,255,0.6)" }}
+      >
+        Log in to deposit
+      </button>
+    </section>
   );
 }
 
