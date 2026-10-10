@@ -1,0 +1,50 @@
+{
+  "name": "CreditedDeposit",
+  "type": "object",
+  "properties": {
+    "tx_hash": {
+      "type": "string",
+      "description": "On-chain tx hash credited (global idempotency key \u2014 a tx can be credited at most once across the whole app)"
+    },
+    "from_address": {
+      "type": "string",
+      "default": "",
+      "description": "On-chain sender of the credited transfer"
+    },
+    "amount": {
+      "type": "number",
+      "default": 0,
+      "description": "DCDN whole-token amount credited"
+    },
+    "wallet_id": {
+      "type": "string",
+      "default": "",
+      "description": "Wallet that received the credit"
+    }
+  },
+  "required": [
+    "tx_hash"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

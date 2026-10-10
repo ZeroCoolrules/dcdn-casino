@@ -1,0 +1,103 @@
+{
+  "name": "Game",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Display name of the game"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL slug for the game page"
+    },
+    "theme": {
+      "type": "string",
+      "description": "Cinematic mob theme inspiration"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "slot",
+        "table",
+        "dice",
+        "cards"
+      ],
+      "default": "slot"
+    },
+    "rtp": {
+      "type": "number",
+      "description": "Return to player percentage (0-100)",
+      "default": 96
+    },
+    "min_bet": {
+      "type": "number",
+      "description": "Minimum DCDN wager",
+      "default": 10
+    },
+    "max_bet": {
+      "type": "number",
+      "description": "Maximum DCDN wager",
+      "default": 1000
+    },
+    "max_multiplier": {
+      "type": "number",
+      "description": "Top line multiplier",
+      "default": 1000
+    },
+    "paylines": {
+      "type": "number",
+      "description": "Number of paylines / ways",
+      "default": 50
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Card/hero image URL"
+    },
+    "blurb": {
+      "type": "string",
+      "description": "Short flavor description"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "jackpot": {
+      "type": "number",
+      "description": "Current progressive jackpot in DCDN",
+      "default": 0
+    },
+    "bonus_hit_rate": {
+      "type": "string",
+      "description": "Bonus trigger frequency label",
+      "default": "1 in 48"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "slug",
+    "type",
+    "rtp"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": null,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

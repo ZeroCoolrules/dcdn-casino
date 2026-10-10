@@ -1,0 +1,45 @@
+{
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "daily_deposit_notion_log",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "log_totals": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "logDailyDepositTotals",
+            "args": {}
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Log daily deposit totals",
+            "description": "Aggregate yesterday's deposits to Notion"
+          }
+        }
+      }
+    ]
+  },
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 1 * * *",
+      "one_time_date": null,
+      "timezone": "UTC",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "name": "Daily Deposit Notion Log",
+  "description": "Logs the previous UTC day's player deposit totals (on-chain + manual) as a row in the Notion team database every night at 01:00 UTC."
+}

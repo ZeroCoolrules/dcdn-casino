@@ -1,0 +1,118 @@
+{
+  "name": "BlackjackHand",
+  "type": "object",
+  "properties": {
+    "player_id": {
+      "type": "string",
+      "description": "User id of the player who owns this hand"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "player_turn",
+        "settled"
+      ],
+      "default": "player_turn"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "free",
+        "real"
+      ],
+      "default": "free"
+    },
+    "bet": {
+      "type": "number",
+      "default": 0,
+      "description": "Opening stake in DCDN"
+    },
+    "wager": {
+      "type": "number",
+      "default": 0,
+      "description": "Total stake including a double down"
+    },
+    "doubled": {
+      "type": "boolean",
+      "default": false
+    },
+    "server_seed": {
+      "type": "string",
+      "description": "SECRET until the hand settles. Never returned to the browser while the hand is live."
+    },
+    "server_hash": {
+      "type": "string",
+      "description": "sha256(server_seed), shown to the player at the deal (commitment)"
+    },
+    "client_seed": {
+      "type": "string"
+    },
+    "nonce": {
+      "type": "number",
+      "default": 0
+    },
+    "cursor": {
+      "type": "number",
+      "default": 4,
+      "description": "Index of the next card in the shuffled shoe"
+    },
+    "player_cards": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dealer_cards": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outcome": {
+      "type": "string",
+      "default": ""
+    },
+    "payout": {
+      "type": "number",
+      "default": 0
+    },
+    "paid": {
+      "type": "boolean",
+      "default": false,
+      "description": "True once the payout has been credited to the vault"
+    },
+    "version": {
+      "type": "number",
+      "default": 0,
+      "description": "Compare-and-swap token for hand actions"
+    }
+  },
+  "required": [
+    "player_id",
+    "status",
+    "mode",
+    "bet"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

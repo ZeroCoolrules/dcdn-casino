@@ -1,0 +1,91 @@
+{
+  "name": "Round",
+  "type": "object",
+  "properties": {
+    "game_id": {
+      "type": "string"
+    },
+    "game_title": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "free",
+        "real"
+      ],
+      "default": "free"
+    },
+    "bet": {
+      "type": "number",
+      "default": 0
+    },
+    "multiplier": {
+      "type": "number",
+      "default": 0
+    },
+    "payout": {
+      "type": "number",
+      "default": 0
+    },
+    "label": {
+      "type": "string",
+      "default": "Bust"
+    },
+    "reels": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "server_hash": {
+      "type": "string"
+    },
+    "client_seed": {
+      "type": "string"
+    },
+    "nonce": {
+      "type": "number",
+      "default": 0
+    },
+    "roll": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "game_id",
+    "mode",
+    "bet"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

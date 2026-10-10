@@ -1,0 +1,92 @@
+{
+  "name": "Wallet",
+  "type": "object",
+  "properties": {
+    "balance": {
+      "type": "number",
+      "description": "DCDN token balance (off-chain ledger for free + real play)",
+      "default": 0
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "free",
+        "real"
+      ],
+      "default": "free"
+    },
+    "total_wagered": {
+      "type": "number",
+      "default": 0
+    },
+    "total_won": {
+      "type": "number",
+      "default": 0
+    },
+    "spins": {
+      "type": "number",
+      "default": 0
+    },
+    "nonce": {
+      "type": "number",
+      "default": 0,
+      "description": "Provably-fair nonce counter"
+    },
+    "version": {
+      "type": "number",
+      "default": 0,
+      "description": "Optimistic-concurrency token for atomic settlement (compare-and-swap)"
+    },
+    "wallet_address": {
+      "type": "string",
+      "default": ""
+    },
+    "last_deposit_tx": {
+      "type": "string",
+      "default": "",
+      "description": "Hash of the last credited on-chain deposit (display only \u2014 authoritative idempotency lives in CreditedDeposit)"
+    },
+    "free_stake_claimed": {
+      "type": "boolean",
+      "default": false,
+      "description": "One-time complimentary free-stake grant guard. Set server-side only; users cannot reset it because Wallet writes are admin-only."
+    },
+    "has_deposited": {
+      "type": "boolean",
+      "default": false,
+      "description": "True once this vault has received an on-chain deposit. Deposit-backed balances may toggle back to real-stakes mode; pure complimentary balances may not be promoted to real."
+    }
+  },
+  "required": [
+    "mode"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

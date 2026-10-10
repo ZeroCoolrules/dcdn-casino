@@ -1,0 +1,78 @@
+{
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "app_user_auth",
+      "events": [
+        "signup"
+      ]
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "signup_free_stake",
+      "version": "1.1",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "grant_stake": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "claimFreeStake",
+            "args": {
+              "user_id": "${ .trigger.user_id }",
+              "email": "${ .trigger.email }",
+              "auth_method": "${ .trigger.auth_method }"
+            }
+          },
+          "then": "check_verified",
+          "x-base44": {
+            "title": "Grant signup free stake",
+            "description": "1,000 DCDN complimentary stake"
+          }
+        }
+      },
+      {
+        "check_verified": {
+          "switch": [
+            {
+              "when": "${ .trigger.app_user.is_verified == true }",
+              "then": "end"
+            },
+            {
+              "when": "${ true }",
+              "then": "notify_unverified"
+            }
+          ],
+          "x-base44": {
+            "title": "User verified?",
+            "description": "Nudge unverified players"
+          }
+        }
+      },
+      {
+        "notify_unverified": {
+          "call": "send_email",
+          "with": {
+            "template_name": "VerifyReminder",
+            "to": "${ .trigger.email }",
+            "description": "Reminds an unverified player to confirm their email",
+            "variables": {
+              "first_name": "${ .trigger.full_name }",
+              "app_name": "Dreamcadian Casino"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Send verify reminder",
+            "description": "Email unverified player"
+          }
+        }
+      }
+    ]
+  },
+  "name": "Signup Free Stake",
+  "description": "Auto-grants 1,000 DCDN complimentary free-play stake to every new player on signup, then nudges unverified players to confirm their email."
+}

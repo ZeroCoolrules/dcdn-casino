@@ -1,0 +1,69 @@
+{
+  "name": "Deposit",
+  "type": "object",
+  "properties": {
+    "amount": {
+      "type": "number",
+      "description": "DCDN amount requested for deposit"
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "manual",
+        "onchain"
+      ],
+      "default": "manual",
+      "description": "How the deposit was initiated"
+    },
+    "reference": {
+      "type": "string",
+      "default": "",
+      "description": "Manual receipt/note or on-chain tx hash"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "default": "pending"
+    },
+    "credited_amount": {
+      "type": "number",
+      "default": 0,
+      "description": "DCDN actually credited on approval"
+    }
+  },
+  "required": [
+    "amount",
+    "method"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

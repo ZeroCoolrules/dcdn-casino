@@ -1,0 +1,7 @@
+{
+  "type": "notion",
+  "scopes": [
+    "read",
+    "write"
+  ]
+}

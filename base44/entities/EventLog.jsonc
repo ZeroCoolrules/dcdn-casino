@@ -1,0 +1,53 @@
+{
+  "name": "EventLog",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "page_view",
+        "game_view",
+        "video_chat_join"
+      ],
+      "description": "Tracked visitor event type"
+    },
+    "game_id": {
+      "type": "string",
+      "default": "",
+      "description": "Game id for game_view events"
+    },
+    "game_title": {
+      "type": "string",
+      "default": "",
+      "description": "Game title for game_view events"
+    },
+    "path": {
+      "type": "string",
+      "default": "",
+      "description": "Route path for page_view events"
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
