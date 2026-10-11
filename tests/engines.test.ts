@@ -83,14 +83,17 @@ test("blackjack hand values and rules", () => {
   assert.equal(compareHands(["KS", "QH", "5D"], ["9D", "QH"]), "bust");
   assert.equal(compareHands(["KS", "9H"], ["9D", "QH", "5C"]), "win");
   assert.equal(compareHands(["KS", "9H"], ["9D", "KH"]), "push");
-  assert.equal(payoutFor("blackjack", 10), 25);
+  assert.equal(payoutFor("blackjack", 10), 22);
   assert.equal(payoutFor("win", 10), 20);
   assert.equal(payoutFor("push", 10), 10);
   assert.equal(payoutFor("lose", 10), 0);
-  // Dealer stands on soft 17.
+  // Dealer hits soft 17 but stands on hard 17.
   const d = ["AS", "6H"];
   playDealer(["2C"], d, 0);
-  assert.deepEqual(d, ["AS", "6H"]);
+  assert.deepEqual(d, ["AS", "6H", "2C"]);
+  const h = ["10S", "7H"];
+  playDealer(["2C"], h, 0);
+  assert.deepEqual(h, ["10S", "7H"]);
 });
 
 test("blackjack simulation with simple basic strategy gives a sane house edge", async () => {

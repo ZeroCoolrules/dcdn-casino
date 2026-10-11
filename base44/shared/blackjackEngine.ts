@@ -1,6 +1,6 @@
 // "Back Room Blackjack" — 6-deck shoe, freshly shuffled per hand from the
-// provably-fair stream. Rules: dealer stands on all 17s, dealer peeks for
-// blackjack, blackjack pays 3:2, double down on the first two cards only,
+// provably-fair stream. Rules: dealer hits soft 17, dealer peeks for
+// blackjack, blackjack pays 6:5, double down on the first two cards only,
 // no splits or insurance (yet). Pure functions; the backend function stores
 // the hand and moves money.
 import { FairStream } from "./fairRng.ts";
@@ -44,17 +44,20 @@ export function isBlackjack(cards: string[]): boolean {
 
 export type Outcome = "blackjack" | "win" | "push" | "lose" | "bust";
 
-// Dealer draws to 17 (stands on soft 17). Returns the new cursor.
+// Dealer draws to 17 and hits soft 17 (H17). Returns the new cursor.
 export function playDealer(shoe: string[], dealer: string[], cursor: number): number {
-  while (handValue(dealer).total < 17) dealer.push(shoe[cursor++]);
-  return cursor;
+  for (;;) {
+    const { total, soft } = handValue(dealer);
+    if (total > 17 || (total === 17 && !soft)) return cursor;
+    dealer.push(shoe[cursor++]);
+  }
 }
 
 // Total returned to the player (stake included) for a finished hand.
 export function payoutFor(outcome: Outcome, wager: number): number {
   const r = (x: number) => Math.round(x * 100) / 100;
   switch (outcome) {
-    case "blackjack": return r(wager * 2.5);
+    case "blackjack": return r(wager * 2.2); // 6:5
     case "win": return r(wager * 2);
     case "push": return r(wager);
     default: return 0;

@@ -11,7 +11,7 @@ const SUIT = { S: "♠", H: "♥", D: "♦", C: "♣" };
 const BETS = [5, 10, 25, 50, 100];
 
 const OUTCOME_TEXT = {
-  blackjack: "Blackjack! Pays 3:2",
+  blackjack: "Blackjack! Pays 6:5",
   win: "You win",
   push: "Push — stake returned",
   lose: "House wins",
@@ -87,7 +87,7 @@ export default function Blackjack() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <Link to="/" className="no-underline text-xs uppercase tracking-widest font-bold" style={{ color: CYAN }}>← Back to floor</Link>
         <div className="text-[10px] uppercase tracking-widest text-white">
-          6 decks · Dealer stands on 17 · Blackjack pays 3:2 · Provably Fair
+          6 decks · Dealer hits soft 17 · Blackjack pays 6:5 · Provably Fair
         </div>
       </div>
 
