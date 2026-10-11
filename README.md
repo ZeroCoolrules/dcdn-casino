@@ -9,7 +9,7 @@ server. Built on Base44 (frontend in `src/`, backend in `base44/`).
 | Neon Hold'em (6-seat tables) | `/holdem` | `dealHoldem` + `HoldemLobby` actor | Base44 app |
 | Back Room Blackjack | `/blackjack` | `playBlackjack` | ported from the AI Studio app, rebuilt server-side |
 | Wheel of the Don (European roulette) | `/roulette` | `spinRoulette` | ported from the AI Studio app, rebuilt server-side |
-| Slot Lounge (6 themed slots) | — | — | waiting on a complete code export |
+| Slot Lounge (6 themed slots) | [slot-lounge.onrender.com](https://slot-lounge.onrender.com/) (linked in the header) | its own Node server | separate app: [ZeroCoolrules/slot-lounge](https://github.com/ZeroCoolrules/slot-lounge), own accounts and wallet |
 
 ## How money moves
 

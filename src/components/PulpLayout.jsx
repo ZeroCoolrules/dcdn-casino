@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/AuthContext";
 import { Wallet as WalletIcon, Radio, ArrowRight, Trophy, LogIn, LogOut } from "lucide-react";
 
 const NEON = "#ff00ff";
+const SLOT_LOUNGE_URL = "https://slot-lounge.onrender.com/";
 const CYAN = "#00ffff";
 
 export default function PulpLayout() {
@@ -150,6 +151,15 @@ export default function PulpLayout() {
           >
             Hold'em Tables <ArrowRight className="inline w-3 h-3" />
           </Link>
+          <a
+            href={SLOT_LOUNGE_URL}
+            target="_blank"
+            rel="noopener"
+            className="no-underline font-extrabold text-xs uppercase tracking-widest"
+            style={{ color: NEON, textShadow: "0 0 8px rgba(255,0,255,0.7)", borderBottom: "2px solid " + NEON }}
+          >
+            Slot Lounge <ArrowRight className="inline w-3 h-3 -rotate-45" />
+          </a>
           <Link
             to="/operator"
             className="no-underline font-extrabold text-xs uppercase tracking-widest"
