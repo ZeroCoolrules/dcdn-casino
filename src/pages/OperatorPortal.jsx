@@ -1,12 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import GameConfigEditor from "@/components/GameConfigEditor";
+import { useAuth } from "@/lib/AuthContext";
 
 const NEON = "#ff00ff";
 const CYAN = "#00ffff";
 const INK = "#0c061a";
 
+// The backend already enforces admin-only writes (Game RLS, approveDeposit); this
+// gate keeps non-admins from seeing the console at all.
 export default function OperatorPortal() {
+  const { user, isAuthenticated, isLoadingAuth, navigateToLogin } = useAuth();
+  if (isLoadingAuth) return null;
+  if (!isAuthenticated || user?.role !== "admin") {
+    return (
+      <section className="p-8 max-w-xl mx-auto flex flex-col gap-4 text-center" style={{ background: "linear-gradient(180deg,#160a2b,#0c061a)", border: "1px solid " + NEON, boxShadow: "0 0 14px rgba(255,0,255,0.25)" }}>
+        <div className="text-2xl uppercase tracking-wide text-white" style={{ fontFamily: "Impact, sans-serif" }}>Operators only</div>
+        <p className="text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>
+          {isAuthenticated ? "This console is restricted to casino admins." : "Log in with an admin account to open the operator console."}
+        </p>
+        {!isAuthenticated && (
+          <button
+            onClick={navigateToLogin}
+            className="uppercase tracking-widest py-3 px-4 text-lg font-black self-center"
+            style={{ fontFamily: "Impact, sans-serif", background: CYAN, color: INK, boxShadow: "0 0 14px rgba(0,255,255,0.6)" }}
+          >
+            Log in
+          </button>
+        )}
+      </section>
+    );
+  }
+  return <OperatorConsole />;
+}
+
+function OperatorConsole() {
   const [games, setGames] = useState([]);
   const [stats, setStats] = useState(null);
   const [rounds, setRounds] = useState([]);

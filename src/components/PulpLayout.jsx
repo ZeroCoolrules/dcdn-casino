@@ -160,7 +160,7 @@ export default function PulpLayout() {
           >
             Slot Lounge <ArrowRight className="inline w-3 h-3 -rotate-45" />
           </a>
-          <Link
+          {user?.role === "admin" && <Link
             to="/operator"
             className="no-underline font-extrabold text-xs uppercase tracking-widest"
             style={{
@@ -170,7 +170,7 @@ export default function PulpLayout() {
             }}
           >
             Operator Portal <ArrowRight className="inline w-3 h-3" />
-          </Link>
+          </Link>}
           {!isLoadingAuth && (isAuthenticated ? (
             <button
               type="button"
